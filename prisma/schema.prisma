@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String    @id @default(uuid())
+  username   String
+  email      String    @unique
+  password   String
+  role       String // 'user', 'admin', 'super admin'
+  location   String
+  contactNo  String
+  profileImg String
+  address    String
+  reviews    Review[]
+  bookings   Booking[]
+  cart       CartItem[] // Add a cart relationship
+
+  @@map("user")
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  price       Int
+  images      String
+  available   Boolean
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  bookings    Booking[]
+  reviews     Review[]
+  cartItems   CartItem[] // Add a cart relationship
+    @@map("service")
+}
+
+model Review {
+  id      String @id @default(uuid())
+  rating  Int
+  comment String
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id])
+
+      @@map("review")
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  date      DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id])
+
+  @@map("booking")
+}
+
+model CartItem {
+  id         String   @id @default(uuid())
+  quantity   Int
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  serviceId  String
+  service    Service  @relation(fields: [serviceId], references: [id])
+
+  @@map("cart_item")
+}
