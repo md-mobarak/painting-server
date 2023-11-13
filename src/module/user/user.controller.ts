@@ -251,6 +251,7 @@ const userUpdateController: RequestHandler = async (req: any, res) => {
     // }
     const id = req.params.id;
     const data = req.body;
+
     const result = await userService.userProfileUpdate(data, id);
     res.status(200).json({
       success: true,

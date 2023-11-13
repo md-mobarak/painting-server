@@ -1,5 +1,6 @@
 import cors from "cors";
 import express, { Application } from "express";
+import { blogRuter } from "./module/blog/blog.route";
 import { cartRuter } from "./module/cartItem/cartItem.route";
 import { paintingRouter } from "./module/paintingService/paintService.route";
 import { userRuter } from "./module/user/user.route";
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1/", userRuter);
 app.use("/api/v1/", cartRuter);
 app.use("/api/v1/painting/", paintingRouter);
+app.use("/api/v1/blogs/", blogRuter);
 // app.use("/api/v1/categories/", categoryRouter);
 // app.use("/api/v1/books/", bookRouter);
 // app.use("/api/v1/orders/", orderRuter);
