@@ -29,11 +29,11 @@ const CreatePaintingServiceController: RequestHandler = async (
       data: result,
     });
   } catch (err) {
-    return res.status(404).json({
-      statusCode: 404,
+    return res.status(500).json({
+      statusCode: 500,
       success: false,
       message: "Failed to painting create",
-      err: err,
+      err: console.log(err),
     });
   }
 };
@@ -162,9 +162,14 @@ const deleteServiceController: RequestHandler = async (req: any, res: any) => {
     });
   }
 };
+
+const paintingServiceUpdateController: RequestHandler = async (req: any, res: any) => { }
+
+
 export const paintingServiceController = {
   CreatePaintingServiceController,
   getPaintingServiceController,
   deleteServiceController,
   singleGetServiceController,
+  paintingServiceUpdateController
 };

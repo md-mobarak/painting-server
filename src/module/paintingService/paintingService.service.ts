@@ -32,10 +32,19 @@ const deletePaintingService = async (id: string) => {
   });
   return result;
 };
-
+const paintingServiceUpdate = async (data: any, id: string) => {
+  const result = await prisma.service.update({
+    where: {
+      id: id,
+    },
+    data,
+  });
+  return result;
+};
 export const paintingService = {
   createPaintingService,
   getPaintingService,
   deletePaintingService,
   singlePaintingService,
+  paintingServiceUpdate 
 };

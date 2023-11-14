@@ -152,6 +152,7 @@ const userLoginController: RequestHandler = async (req, res) => {
 };
 const userGetController: RequestHandler = async (req: any, res: any) => {
   try {
+    const role = req.user.role;
     const { page = 1, size = 6 } = req.query;
     // console.log(req.user);
     const filters: any = {
@@ -178,6 +179,7 @@ const userGetController: RequestHandler = async (req: any, res: any) => {
         size: Number(size),
         total,
         totalPage,
+        role,
       },
       user: allUsers,
     });

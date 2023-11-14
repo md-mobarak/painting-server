@@ -9,7 +9,7 @@ import { blogController } from "./blog.controller";
 
 const router = express.Router();
 
-router.post("/", auth,blogController.createBlogController);
+router.post("/", auth, blogController.createBlogController);
 // router.get("/user-cart", auth, cartController.userCartItemGetController);
 // router.get("/profile", auth, userController.userProfileGetController);
 // router.get("/users/:id", userController.userSingleGetController);

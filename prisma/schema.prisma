@@ -30,14 +30,16 @@ model Service {
   description String
   price       Int
   images      String
+  category    String    @default("uncategorized") // Add default value
   available   Boolean
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
   bookings    Booking[]
   reviews     Review[]
   cartItems   CartItem[] // Add a cart relationship
-    @@map("service")
+  @@map("service")
 }
+
 
 model Review {
   id      String @id @default(uuid())
