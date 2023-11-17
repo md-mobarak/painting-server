@@ -7,6 +7,10 @@ const blogPostService = async (data: Blog) => {
   });
   return result;
 };
+const allBlogsGetService = async () => { 
+const result = await prisma.blog.findMany({})
+return result
+}
 const blogDeleteService = async (id: string) => {
   const result = await prisma.blog.delete({
     where: {
@@ -19,4 +23,5 @@ const blogDeleteService = async (id: string) => {
 export const blogServices = {
   blogPostService,
   blogDeleteService,
+  allBlogsGetService
 };

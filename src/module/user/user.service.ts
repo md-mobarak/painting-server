@@ -41,6 +41,17 @@ const userProfileUpdate = async (data: any, id: string) => {
   });
   return result;
 };
+const userRoleUpdate = async (data: any, id: string) => {
+  const result = await prisma.user.update({
+    where: {
+      id: id,
+    },
+    data,
+  });
+  console.log(result);
+
+  return result;
+};
 const userDeleteService = async (id: string) => {
   const result = await prisma.user.delete({
     where: {
@@ -73,4 +84,5 @@ export const userService = {
   userDeleteService,
   userLoginService,
   allUserGetService,
+  userRoleUpdate,
 };

@@ -163,13 +163,42 @@ const deleteServiceController: RequestHandler = async (req: any, res: any) => {
   }
 };
 
-const paintingServiceUpdateController: RequestHandler = async (req: any, res: any) => { }
-
+const paintingServiceUpdateController: RequestHandler = async (
+  req: any,
+  res: any
+) => {
+  try {
+    // const isAdmin = req?.user?.role === "admin";
+    // if (!isAdmin) {
+    //   return res.status(404).json({
+    //     success: true,
+    //     statusCode: 404,
+    //     message: "Unauthorized access",
+    //   });
+    // }
+    const id = await req?.params?.id;
+    const data = req.body;
+    const result = await paintingService.paintingServiceUpdate(data, id);
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "service Updated successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      statusCode: StatusCodes.UNAUTHORIZED,
+      success: false,
+      message: "Failed to service Updated",
+      err: err,
+    });
+  }
+};
 
 export const paintingServiceController = {
   CreatePaintingServiceController,
   getPaintingServiceController,
   deleteServiceController,
   singleGetServiceController,
-  paintingServiceUpdateController
+  paintingServiceUpdateController,
 };

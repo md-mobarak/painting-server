@@ -46,5 +46,5 @@ export const paintingService = {
   getPaintingService,
   deletePaintingService,
   singlePaintingService,
-  paintingServiceUpdate 
+  paintingServiceUpdate,
 };

@@ -12,7 +12,10 @@ router.post(
 router.get("/service", paintingServiceController.getPaintingServiceController);
 // router.get("/:categoryId/category", bookController.getByCategoryIdController);
 router.get("/:id", paintingServiceController.singleGetServiceController);
-// router.patch("/:id", auth, bookController.updateBookController);
+router.patch(
+  "/update-painting/:id",
+  paintingServiceController.paintingServiceUpdateController
+);
 router.delete("/:id", paintingServiceController.deleteServiceController);
 
 export const paintingRouter = router;

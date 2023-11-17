@@ -152,7 +152,16 @@ const userLoginController: RequestHandler = async (req, res) => {
 };
 const userGetController: RequestHandler = async (req: any, res: any) => {
   try {
-    const role = req.user.role;
+    // const isAdmin = req?.user?.role === "admin";
+    // // console.log(isAdmin, "ata req");
+    // if (!isAdmin) {
+    //   res.status(404).json({
+    //     success: true,
+    //     statusCode: 404,
+    //     message: "Unauthorized access",
+    //   });
+    // }
+    const role = req?.user?.role;
     const { page = 1, size = 6 } = req.query;
     // console.log(req.user);
     const filters: any = {
@@ -181,28 +190,8 @@ const userGetController: RequestHandler = async (req: any, res: any) => {
         totalPage,
         role,
       },
-      user: allUsers,
+      user: allUsers.reverse(),
     });
-
-    // const isAdmin = req?.user?.role === "admin";
-    // // console.log(isAdmin, "ata req");
-    // if (!isAdmin) {
-    //   res.status(404).json({
-    //     success: true,
-    //     statusCode: 404,
-    //     message: "Unauthorized access",
-    //   });
-    // }
-
-    // const result = await userService.allUserGetService();
-    // res.status(200).json({
-    //   success: true,
-    //   statusCode: 200,
-    //   message: "User get successfully",
-    //   data: {
-    //     result,
-    //   },
-    // });
   } catch (err) {
     res.status(StatusCodes.UNAUTHORIZED).json({
       statusCode: StatusCodes.UNAUTHORIZED,
@@ -245,7 +234,7 @@ const userUpdateController: RequestHandler = async (req: any, res) => {
     // const isAdmin = req?.user?.role === "admin";
     // // console.log(isAdmin, "ata req");
     // if (!isAdmin) {
-    //   res.status(404).json({
+    //  return res.status(404).json({
     //     success: true,
     //     statusCode: 404,
     //     message: "Unauthorized access",
@@ -255,7 +244,7 @@ const userUpdateController: RequestHandler = async (req: any, res) => {
     const data = req.body;
 
     const result = await userService.userProfileUpdate(data, id);
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       statusCode: 200,
       message: "User updated successfully",
@@ -264,7 +253,7 @@ const userUpdateController: RequestHandler = async (req: any, res) => {
       },
     });
   } catch (err) {
-    res.status(StatusCodes.UNAUTHORIZED).json({
+    return res.status(StatusCodes.UNAUTHORIZED).json({
       statusCode: StatusCodes.UNAUTHORIZED,
       success: false,
       message: "Failed to user update",
@@ -302,6 +291,39 @@ const deleteUserController: RequestHandler = async (req: any, res) => {
     });
   }
 };
+
+const userRoleUpdateContorller: RequestHandler = async (req: any, res) => {
+  try {
+    const isAdmin = req?.user?.role === "super-admin";
+    console.log(isAdmin);
+    if (!isAdmin) {
+      return res.status(404).json({
+        success: true,
+        statusCode: 404,
+        message: "Unauthorized access",
+      });
+    }
+    const id = req.params.id;
+    const data = req.body;
+    const result = await userService.userProfileUpdate(data, id);
+    console.log(result);
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "User updated role successfully",
+      data: {
+        result,
+      },
+    });
+  } catch (err) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      statusCode: StatusCodes.UNAUTHORIZED,
+      success: false,
+      message: "Failed to user role update",
+      err: err,
+    });
+  }
+};
 const userProfileGetController: RequestHandler = async (req: any, res) => {
   try {
     const tokenUserId = req.user.userId;
@@ -334,4 +356,5 @@ export const userController = {
   deleteUserController,
   userUpdateController,
   userSingleGetController,
+  userRoleUpdateContorller,
 };

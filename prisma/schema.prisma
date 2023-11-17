@@ -50,7 +50,7 @@ model Review {
   serviceId String
   service   Service @relation(fields: [serviceId], references: [id])
 
-      @@map("review")
+  @@map("review")
 }
 
 model Booking {
