@@ -10,16 +10,10 @@ import { reviewController } from "./review.controller";
 
 const router = express.Router();
 
-router.post("/", reviewController.createReviewController);
-router.get("/", auth, reviewController.reviewsGetController);
+router.post("/", auth, reviewController.createReviewController);
+router.get("/", reviewController.reviewsGetController);
 // router.get("/profile", auth, userController.userProfileGetController);
-router.get("/:serviceId", auth, reviewController.singleReviewGetController);
-// router.patch(
-//   "/cart-update/:id",
-//   cartController.userCartUpdateQuantityController
-// );
-// router.delete("/:id", auth, blogController.blogsDeleteController);
-// router.post("/auth/signup", userController.userCreateController);
-// router.post("/auth/signin", userController.userLoginController);
+router.delete("/:id", auth, reviewController.reviewDeletedController);
+router.get("/:serviceId", reviewController.singleReviewGetController);
 
 export const reviewRuter = router;

@@ -5,15 +5,15 @@ import { reviewService } from "./review.service";
 const prisma = new PrismaClient();
 const createReviewController: RequestHandler = async (req: any, res: any) => {
   try {
-    // const userRole = req?.user?.role === "admin" || "super-admin";
-    // if (userRole) {
-    //   return res.status(404).json({
-    //     success: true,
-    //     statusCode: 404,
-    //     message: "Unauthorized: Only admins are allowed to create blog posts.",
-    //   });
-    // }
-    const data = req.body;
+    const userRole = (await req?.user?.role) === "admin" || "super-admin";
+    if (!userRole) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "Unauthorized: Only user are allowed to comment posts.",
+      });
+    }
+    const data = await req.body;
     const result = await reviewService.reviewPostService(data);
     return res.status(200).json({
       success: false,
@@ -36,32 +36,32 @@ const singleReviewGetController: RequestHandler = async (
 ) => {
   try {
     const serviceId = req.params.serviceId;
-    const result = await reviewService.ReviewSingleGetService(serviceId);
+    const result = await reviewService?.ReviewSingleGetService(serviceId);
     return res.status(200).json({
-      success: false,
+      success: true,
       statusCode: 200,
-      message: "Review get successfully!",
+      message: "Single Review get successfully!",
       data: result,
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
       statusCode: 500,
-      message: "Review not get successfully!",
+      message: "Single Review not get successfully!",
       err: err,
     });
   }
 };
 const reviewsGetController: RequestHandler = async (req: any, res: any) => {
   try {
-    const userRole = req?.user?.role === "admin" || "super-admin";
-    if (!userRole) {
-      return res.status(404).json({
-        success: true,
-        statusCode: 404,
-        message: "Unauthorized: Only admins are allowed to get blogs.",
-      });
-    }
+    // const userRole = req?.user?.role === "admin" || "super-admin";
+    // if (!userRole) {
+    //   return res.status(404).json({
+    //     success: true,
+    //     statusCode: 404,
+    //     message: "Unauthorized: Only admins are allowed to get blogs.",
+    //   });
+    // }
     const role = req?.user?.role;
     const { page = 1, size = 3 } = req.query;
     // console.log(req.user);
@@ -79,6 +79,10 @@ const reviewsGetController: RequestHandler = async (req: any, res: any) => {
       // where: filters,
       skip,
       take: Number(size),
+      include: {
+        user: true,
+        service: true,
+      },
     });
     return res?.status(200)?.json({
       success: true,
@@ -91,7 +95,7 @@ const reviewsGetController: RequestHandler = async (req: any, res: any) => {
         totalPage,
         role,
       },
-      blogs: allReviews?.reverse(),
+      review: allReviews?.reverse(),
     });
   } catch (err) {
     return res.status(500).json({
@@ -103,11 +107,19 @@ const reviewsGetController: RequestHandler = async (req: any, res: any) => {
   }
 };
 const reviewDeletedController: RequestHandler = async (req: any, res: any) => {
+  // console.log(req.user);
   try {
-    const id = req.params.id;
+    if (req?.user?.role === "user") {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "Unauthorized: Only user are allowed to review deleted.",
+      });
+    }
+    const id = await req.params.id;
     const result = await reviewService.ReviewDeleteService(id);
     return res.status(200).json({
-      success: false,
+      success: true,
       statusCode: 200,
       message: "Review deleted successfully!",
       data: result,

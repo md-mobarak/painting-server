@@ -9,17 +9,6 @@ const CreatePaintingServiceController: RequestHandler = async (
   res: any
 ) => {
   try {
-    // console.log(req.body);
-
-    // const isAdmin = req?.user?.role === "admin";
-    // // console.log(isAdmin, "ata req");
-    // if (!isAdmin) {
-    //   res.status(404).json({
-    //     success: true,
-    //     statusCode: 404,
-    //     message: "Unauthorized access",
-    //   });
-    // }
     const data: any = await req.body;
     const result = await paintingService.createPaintingService(data);
     return res.status(200).json({
@@ -58,6 +47,7 @@ const getPaintingServiceController: RequestHandler = async (
     const filters: any = {
       AND: [],
     };
+
     if (minPrice) {
       filters.AND.push({ price: { gte: parseFloat(minPrice.toString()) } });
     }
@@ -66,20 +56,22 @@ const getPaintingServiceController: RequestHandler = async (
       filters.AND.push({ price: { lte: parseFloat(maxPrice.toString()) } });
     }
 
+    if (category) {
+      filters.AND.push({ category: { equals: category.toString() } });
+    }
+
     if (search) {
       filters.AND.push({
-        OR: [
-          { title: { contains: search.toString(), mode: "insensitive" } },
-          // { author: { contains: search.toString(), mode: "insensitive" } },
-          // { genre: { contains: search.toString(), mode: "insensitive" } },
-        ],
+        OR: [{ title: { contains: search.toString(), mode: "insensitive" } }],
       });
     }
+
     const skip = (Number(page) - 1) * Number(size);
 
     const total = await prisma.service.count({
       where: filters,
     });
+
     const totalPage = Math.ceil(total / Number(size));
 
     const services = await prisma.service.findMany({
@@ -90,6 +82,7 @@ const getPaintingServiceController: RequestHandler = async (
         [sortBy]: sortOrder,
       },
     });
+
     return res.status(200).json({
       success: true,
       statusCode: 200,
@@ -106,11 +99,12 @@ const getPaintingServiceController: RequestHandler = async (
     return res.status(404).json({
       statusCode: 404,
       success: false,
-      message: "Failed to painting get",
+      message: "Failed to get painting services",
       err: err,
     });
   }
 };
+
 const singleGetServiceController: RequestHandler = async (
   req: any,
   res: any

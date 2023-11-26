@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.post("/", auth, blogController.createBlogController);
 router.get("/", auth, blogController.blogsGetController);
+router.get("/user/", blogController.userGetAllBlogsController);
 // router.get("/profile", auth, userController.userProfileGetController);
 // router.get("/users/:id", userController.userSingleGetController);
 // router.patch(

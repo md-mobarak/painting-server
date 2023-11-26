@@ -82,6 +82,38 @@ const blogsGetController: RequestHandler = async (req: any, res: any) => {
   }
 };
 
+const userGetAllBlogsController: RequestHandler = async (
+  req: any,
+  res: any
+) => {
+  try {
+    // console.log(req.user.role);
+    // const userRole = req?.user?.role === "admin" || "super-admin";
+    // if (!userRole) {
+    //   return res.status(404).json({
+    //     success: true,
+    //     statusCode: 404,
+    //     message: "Unauthorized: Only admins are allowed  blog delete.",
+    //   });
+    // }
+
+    const result = await blogServices.allBlogsGetService();
+    return res.status(200).json({
+      success: false,
+      statusCode: 200,
+      message: "blog Get successfully!",
+      data: result,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: "blog not get successfully!",
+      err: err,
+    });
+  }
+};
+
 const blogsDeleteController: RequestHandler = async (req: any, res: any) => {
   try {
     // console.log(req.user.role);
@@ -115,4 +147,5 @@ export const blogController = {
   createBlogController,
   blogsGetController,
   blogsDeleteController,
+  userGetAllBlogsController,
 };
