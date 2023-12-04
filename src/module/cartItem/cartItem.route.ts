@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/cart", auth, cartController.createCartController);
 router.get("/user-cart", auth, cartController.userCartItemGetController);
-// router.get("/profile", auth, userController.userProfileGetController);
+router.get("/all-cart", auth, cartController.allCartGetController);
 // router.get("/users/:id", userController.userSingleGetController);
 router.patch(
   "/cart-update/:id",

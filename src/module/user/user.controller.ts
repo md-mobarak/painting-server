@@ -263,8 +263,8 @@ const userUpdateController: RequestHandler = async (req: any, res) => {
 };
 const deleteUserController: RequestHandler = async (req: any, res) => {
   try {
-    const isAdmin = req?.user?.role === "admin";
-    // console.log(isAdmin, "ata req");
+    const isAdmin = req?.user?.role === "admin" || "super-admin";
+    console.log(isAdmin, "ata req");
     if (!isAdmin) {
       res.status(404).json({
         success: true,

@@ -130,15 +130,15 @@ const singleGetServiceController: RequestHandler = async (
 
 const deleteServiceController: RequestHandler = async (req: any, res: any) => {
   try {
-    // const isAdmin = req?.user?.role === "admin";
-    // // console.log(isAdmin, "ata req");
-    // if (!isAdmin) {
-    //   res.status(404).json({
-    //     success: true,
-    //     statusCode: 404,
-    //     message: "Unauthorized access",
-    //   });
-    // }
+    const isAdmin = req?.user?.role === "admin" || "super-admin";
+    // console.log(isAdmin, "ata req");
+    if (!isAdmin) {
+      res.status(404).json({
+        success: true,
+        statusCode: 404,
+        message: "Unauthorized access",
+      });
+    }
     const id = await req?.params?.id;
     const result = await paintingService.deletePaintingService(id);
     res.status(200).json({

@@ -59,7 +59,7 @@ const createCartController = async (req: any, res: any) => {
 
 const allCartGetController = async (req: any, res: any) => {
   try {
-    const superAdminRole = req.user.role === "super-Admin";
+    const superAdminRole = req.user.role === "admin" || "super-admin";
     if (!superAdminRole) {
       return res.status(404).json({
         success: true,
