@@ -3,14 +3,14 @@ generator client {
 }
 
 datasource db {
-  // provider = "postgresql"
-    provider = "mongodb"
+  provider = "postgresql"
+    // provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  // id         String    @id @default(uuid())
-   id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  id         String    @id @default(uuid())
+  //  id        String       @id @default(auto()) @map("_id") @db.ObjectId
   username   String
   email      String    @unique
   password   String
@@ -27,8 +27,8 @@ model User {
 }
 
 model Service {
-  // id          String    @id @default(uuid())
-   id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(uuid())
+  //  id        String       @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   price       Int
@@ -45,8 +45,8 @@ model Service {
 
 
 model Review {
-  // id      String @id @default(uuid())
-   id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  id      String @id @default(uuid())
+  //  id        String       @id @default(auto()) @map("_id") @db.ObjectId
   rating  Int
   comment String
   userId    String
@@ -58,8 +58,8 @@ model Review {
 }
 
 model Booking {
-  // id        String   @id @default(uuid())
-   id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
+  //  id        String       @id @default(auto()) @map("_id") @db.ObjectId
   date      DateTime
   userId    String
   user      User     @relation(fields: [userId], references: [id])
@@ -70,8 +70,8 @@ model Booking {
 }
 
 model Blog {
-  // id         String   @id @default(uuid())
-   id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
+  //  id        String       @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   img_url   String?
   description String?
@@ -79,8 +79,8 @@ model Blog {
 
 
 model CartItem {
-  // id         String   @id @default(uuid())
-   id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
+  //  id        String       @id @default(auto()) @map("_id") @db.ObjectId
   quantity   Int
   userId     String
   user       User     @relation(fields: [userId], references: [id])
